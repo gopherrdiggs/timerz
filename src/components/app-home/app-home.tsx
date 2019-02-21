@@ -23,7 +23,7 @@ export class AppHome {
   async componentDidLoad() {
 
     // console.log('Auth token available:', localStorage.getItem('jia:token'));
-    // await this.getAccessibleResource();
+    await this.getAccessibleResource();
     
     await this.loadFields();
   }
