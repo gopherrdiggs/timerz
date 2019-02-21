@@ -32,7 +32,7 @@ export class AuthCallback {
           'client_id': 'C2oRUn55a300fpkPqBSGSE6J2TPrPkVS',
           'client_secret': 'nZuqMPq2-Lc1IXUIQimTrIxOY1hDMWRHfJ7T_fmzCLFy17bqnj6A46gWsJ5gN467',
           'code': this.history.location.query.code,
-          'redirect_uri': 'http://gifted-dijkstra-5dbe3f.netlify.com/home'
+          'redirect_uri': 'https://gifted-dijkstra-5dbe3f.netlify.com/home'
         })
       }
     );

@@ -9,7 +9,7 @@ export class AuthSignin {
   private audience = 'api.atlassian.com';
   private client_id = 'C2oRUn55a300fpkPqBSGSE6J2TPrPkVS';
   private scope = 'read:jira-user read:jira-work';
-  private redirect_uri = 'http://gifted-dijkstra-5dbe3f.netlify.com/callback';
+  private redirect_uri = 'https://gifted-dijkstra-5dbe3f.netlify.com/callback';
   private state = 'lLf9flFS89FSLsf8h';
   private response_type = 'code';
   private prompt = 'consent';
