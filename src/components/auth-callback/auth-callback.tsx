@@ -29,10 +29,10 @@ export class AuthCallback {
         },
         body: JSON.stringify({
           'grant_type': 'authorization_code',
-          'client_id': 'IroDFcYJSRJ4IpYAyV9pLRDI7xrIHoqt',
-          'client_secret': '_rtf-EorT0_SbbCfRkUzfSPUBwLfIVVfxozBTT3G_hc6xZPlB3xkZ5_7eZ8_UGON',
+          'client_id': 'C2oRUn55a300fpkPqBSGSE6J2TPrPkVS',
+          'client_secret': 'nZuqMPq2-Lc1IXUIQimTrIxOY1hDMWRHfJ7T_fmzCLFy17bqnj6A46gWsJ5gN467',
           'code': this.history.location.query.code,
-          'redirect_uri': 'http://localhost:3333/home'
+          'redirect_uri': 'http://gifted-dijkstra-5dbe3f.netlify.com/home'
         })
       }
     );
