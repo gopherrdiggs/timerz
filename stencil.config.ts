@@ -4,7 +4,8 @@ import { Config } from '@stencil/core';
 
 export const config: Config = {
   copy: [
-    { src: '_redirects' }
+    { src: '_redirects' },
+    { src: 'prod-config.json' }
   ],
   globalStyle: 'src/global/app.css',
   globalScript: 'src/global/app.ts',

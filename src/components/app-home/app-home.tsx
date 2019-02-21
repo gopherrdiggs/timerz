@@ -282,16 +282,25 @@ export class AppHome {
     this.report = {} as Report;
     this.issues = [];
 
-    this.issues = await this.getIssues();
-    // console.log('Total issues found:', this.issues.length);
-    
-    await this.collectReportRawData();
-    // console.log('Raw data: ', this.reportRawData);
+    try {
 
-    await this.processReportRawData();
-    // console.log('Report data: ', this.report);
+      this.issues = await this.getIssues();
+      // console.log('Total issues found:', this.issues.length);
+      
+      await this.collectReportRawData();
+      // console.log('Raw data: ', this.reportRawData);
+  
+      await this.processReportRawData();
+      // console.log('Report data: ', this.report);
+    }
+    catch (error) {
 
-    this.generatingReport = false;
+      console.log('Error encountered during search:', error);
+    }
+    finally {
+      
+      this.generatingReport = false;
+    }
   }
 
   @Listen('ionChange')

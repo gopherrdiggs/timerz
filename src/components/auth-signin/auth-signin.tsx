@@ -6,24 +6,23 @@ import { Component } from "@stencil/core";
 })
 export class AuthSignin {
 
-  private audience = 'api.atlassian.com';
-  private client_id = 'C2oRUn55a300fpkPqBSGSE6J2TPrPkVS';
-  private scope = 'read:jira-user read:jira-work';
-  private redirect_uri = 'https://gifted-dijkstra-5dbe3f.netlify.com/callback';
-  private state = 'lLf9flFS89FSLsf8h';
-  private response_type = 'code';
-  private prompt = 'consent';
+  private authUri = '';
 
-  private authUri = `
-https://auth.atlassian.com/authorize
-?audience=${this.audience}
-&client_id=${this.client_id}
-&scope=${this.scope}
-&redirect_uri=${this.redirect_uri}
-&state=${this.state}
-&response_type=${this.response_type}
-&prompt=${this.prompt}
+  async componentWillLoad() {
+
+    let configFile = await fetch('/prod-config.json');
+    let config = await configFile.json();
+    this.authUri = `
+${config.auth_uri}
+?audience=${config.audience}
+&client_id=${config.client_id}
+&scope=${config.scope}
+&redirect_uri=${config.redirect_uri}
+&state=${config.state}
+&response_type=${config.response_type}
+&prompt=${config.prompt}
 `;
+  }
 
   render() {
     return [

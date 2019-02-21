@@ -13,26 +13,26 @@ export class AuthCallback {
 
   async componentWillLoad() {
 
-    // Incoming URL: /callback?code=t4IbEaAEsfjATw42&state=lLf9flFS89FSLsf8h
-    // console.log('history:', this.history);
-    // console.log('history.location:', this.history.location);
-    // console.log('code:', this.history.location.query.code);
     //ToDo: validate against state sent in with request
     // console.log('state:', this.history.location.query.state);
 
+    // Get config
+    let configFile = await fetch('/prod-config.json');
+    let config = await configFile.json();
+
     console.log('Attempting to get auth token...');
     let getTokenResponse = await fetch(
-      'https://auth.atlassian.com/oauth/token', {
+      config.token_uri, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          'grant_type': 'authorization_code',
-          'client_id': 'C2oRUn55a300fpkPqBSGSE6J2TPrPkVS',
-          'client_secret': 'nZuqMPq2-Lc1IXUIQimTrIxOY1hDMWRHfJ7T_fmzCLFy17bqnj6A46gWsJ5gN467',
+          'grant_type': config.grant_type,
+          'client_id': config.client_id,
+          'client_secret': config.client_secret,
           'code': this.history.location.query.code,
-          'redirect_uri': 'https://gifted-dijkstra-5dbe3f.netlify.com/home'
+          'redirect_uri': config.redirect_uri
         })
       }
     );
