@@ -25,4 +25,4 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 .env
 
-env-config.json
+src/env-config.json
