@@ -1,0 +1,19 @@
+{
+  "current_environment": "dev",
+  "dev": {
+    "auth_uri": "https://auth.atlassian.com/authorize",
+    "token_uri": "https://auth.atlassian.com/oauth/token",
+    "api_domain": "https://api.atlassian.com",
+    "audience": "api.atlassian.com",
+    "client_id": "...",
+    "client_secret": "...",
+    "grant_type": "authorization_code",
+    "scope": "read:jira-user read:jira-work",
+    "redirect_uri": "http://localhost:3333/callback",
+    "response_type": "code",
+    "state": "...",
+    "prompt": "consent"
+  },
+  "prod": {
+  }
+}
