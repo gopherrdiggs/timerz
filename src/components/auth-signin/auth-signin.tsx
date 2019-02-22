@@ -1,4 +1,5 @@
 import { Component } from "@stencil/core";
+import { EnvironmentConfigService } from '../../services/environment-config-service';
 
 @Component({
   tag: 'auth-signin',
@@ -7,11 +8,11 @@ import { Component } from "@stencil/core";
 export class AuthSignin {
 
   private authUri = '';
+  private envConfigSvc: EnvironmentConfigService = new EnvironmentConfigService();
 
   async componentWillLoad() {
 
-    let configFile = await fetch('/prod-config.json');
-    let config = await configFile.json();
+    let config = await this.envConfigSvc.getCurrentConfig();
     this.authUri = `
 ${config.auth_uri}
 ?audience=${config.audience}

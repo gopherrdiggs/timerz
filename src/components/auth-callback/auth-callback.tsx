@@ -1,5 +1,6 @@
 import { Component, Prop } from '@stencil/core';
 import { MatchResults, RouterHistory } from '@stencil/router';
+import { EnvironmentConfigService } from '../../services/environment-config-service';
 
 @Component({
   tag: 'auth-callback'
@@ -11,16 +12,13 @@ export class AuthCallback {
   @Prop() state: string;
   @Prop() history: RouterHistory;
 
+  private envConfigSvc: EnvironmentConfigService = new EnvironmentConfigService();
+
   async componentWillLoad() {
 
-    //ToDo: validate against state sent in with request
-    // console.log('state:', this.history.location.query.state);
+    let config = await this.envConfigSvc.getCurrentConfig();
 
-    // Get config
-    let configFile = await fetch('/prod-config.json');
-    let config = await configFile.json();
-
-    console.log('Attempting to get auth token...');
+    // console.log('Attempting to get auth token...');
     let getTokenResponse = await fetch(
       config.token_uri, {
         method: 'POST',
@@ -38,10 +36,11 @@ export class AuthCallback {
     );
 
     let authResponse = await getTokenResponse.json();
-    console.log('Auth response: ', authResponse);
+    // console.log('Auth response: ', authResponse);
 
     localStorage.setItem('jia:token', authResponse.access_token);
 
+    // Redirect to the home page
     this.history.push('/home', {});
   }
 
