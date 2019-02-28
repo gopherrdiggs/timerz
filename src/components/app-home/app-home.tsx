@@ -58,6 +58,7 @@ export class AppHome {
 
     let audioElem = document.getElementById('audioElem') as HTMLAudioElement;
     if (audioElem) {
+      audioElem.load();
       audioElem.play();
     }
 
@@ -130,7 +131,7 @@ export class AppHome {
         </ion-toolbar>
       </ion-footer>,
       <audio id='audioElem'>
-        <source src="assets/sounds/ship-bell.mp3" type="audio/ogg" />
+        <source src="assets/sounds/bell.ogg" type="audio/ogg" />
       </audio>
     ];
   }
