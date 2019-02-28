@@ -130,9 +130,7 @@ export class AppHome {
           }
         </ion-toolbar>
       </ion-footer>,
-      <audio id='audioElem'>
-        <source src="assets/sounds/bell.ogg" type="audio/ogg" />
-      </audio>
+      <audio id='audioElem' src='assets/sounds/bell.ogg'></audio>
     ];
   }
 }
