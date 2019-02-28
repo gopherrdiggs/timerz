@@ -43,7 +43,7 @@ export class TimerSegment {
   @Method()
   startSegmentTimer() {
 
-    let timeoutSeconds = this.durationType === 'minutes'
+    let timeoutSeconds = this._durationType === 'minutes'
       ? this._duration * 60
       : this._duration;
 
