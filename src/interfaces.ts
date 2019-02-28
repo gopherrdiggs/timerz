@@ -1,4 +1,5 @@
-export interface Timer {
+export interface TimerSegment {
   name: string,
-  minutes: number
+  duration: number,
+  active: boolean
 }

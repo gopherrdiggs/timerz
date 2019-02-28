@@ -1,12 +1,26 @@
-import { Component } from '@stencil/core';
+import { Component, State } from '@stencil/core';
+import { TimerSegment } from '../../interfaces';
 
 @Component({
   tag: 'app-home'
 })
 export class AppHome {
 
+  @State() timerSegments: TimerSegment[] = [];
+
+  componentWillLoad() {
+
+    let segments: TimerSegment[] = [
+      { name: 'Segment 1', duration: 3, active: false },
+      { name: 'Segment 2', duration: 10, active: false },
+      { name: 'Segment 3', duration: 5, active: false }
+    ]
+
+    this.timerSegments = segments;
+  }
   
   onStartTimerClick() {
+
     let audioElem = document.getElementById('audioElem') as HTMLAudioElement;
     audioElem.play();
   }
@@ -28,68 +42,11 @@ export class AppHome {
       </ion-header>,
       <ion-content padding>
         <ion-list>
-          <ion-item>
-            <ion-label position='stacked'>Segment 1</ion-label>
-            <ion-grid no-padding>
-              <ion-row no-padding>
-                <ion-col size='10' no-padding>
-                  <ion-grid no-padding>
-                    <ion-row no-padding>
-                      <ion-col size='4' no-padding>
-                        <ion-button fill='clear'>
-                          <ion-icon slot='icon-only' name='remove-circle-outline'></ion-icon>
-                        </ion-button>
-                      </ion-col>
-                      <ion-col size='4' no-padding>
-                        <ion-input value='3'></ion-input>
-                      </ion-col>
-                      <ion-col size='4' no-padding>
-                        <ion-button fill='clear'>
-                          <ion-icon slot='icon-only' name='add-circle-outline'></ion-icon>
-                        </ion-button>
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-                </ion-col>
-                <ion-col size='2' no-padding>
-                  <ion-button fill='clear'>
-                    <ion-icon slot='icon-only' name='more'></ion-icon>
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-          <ion-item>
-            <ion-label position='stacked'>Segment 2</ion-label>
-            <ion-grid no-padding>
-              <ion-row no-padding>
-                <ion-col size='10' no-padding>
-                  <ion-grid no-padding>
-                    <ion-row no-padding>
-                      <ion-col size='4' no-padding>
-                        <ion-button fill='clear'>
-                          <ion-icon slot='icon-only' name='remove-circle-outline'></ion-icon>
-                        </ion-button>
-                      </ion-col>
-                      <ion-col size='4' no-padding>
-                        <ion-input value='10'></ion-input>
-                      </ion-col>
-                      <ion-col size='4' no-padding>
-                        <ion-button fill='clear'>
-                          <ion-icon slot='icon-only' name='add-circle-outline'></ion-icon>
-                        </ion-button>
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-                </ion-col>
-                <ion-col size='2' no-padding>
-                  <ion-button fill='clear'>
-                    <ion-icon slot='icon-only' name='more'></ion-icon>
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
+          { this.timerSegments.map(segment =>
+            <timer-segment name={segment.name} 
+                           duration={segment.duration} 
+                           active={segment.active} />  
+          )}
         </ion-list>
       </ion-content>,
       <ion-footer>
@@ -102,8 +59,7 @@ export class AppHome {
         </ion-toolbar>
       </ion-footer>,
       <audio id="audioElem">
-        <source src="assets/sounds/alien-siren.mp3" type="audio/ogg" />
-        
+        <source src="assets/sounds/ship-bell.mp3" type="audio/ogg" />
       </audio>
     ];
   }
