@@ -14,7 +14,9 @@ export class TimerSegment {
   @Prop() durationType: string = 'minutes';
 
   @State() _active: boolean;
+  @State() _name: string;
   @State() _duration: number;
+  @State() _durationType: string;
   @State() _progressValue: number;
 
   private secondsElapsed;
@@ -23,21 +25,9 @@ export class TimerSegment {
   componentWillLoad() {
 
     this._active = this.active;
+    this._name = this.name;
     this._duration = this.duration;
-  }
-
-  onIncrementClick() {
-
-    if (this._duration < 60) {
-      this._duration = this._duration + 1;
-    }
-  }
-
-  onDecrementClick() {
-    
-    if (this._duration > 0) {
-      this._duration = this._duration - 1;
-    }
+    this._durationType = this.durationType;
   }
 
   @Method()
@@ -83,19 +73,49 @@ export class TimerSegment {
     this.timerSegmentCompleted.emit();
   }
 
-  onTimerStart() {
+  onIncrementClick() {
 
+    if (this._duration < 60) {
+      this._duration = this._duration + 1;
+    }
   }
 
-  onTimerTick() {
+  onDecrementClick() {
+    
+    if (this._duration > 0) {
+      this._duration = this._duration - 1;
+    }
+  }
 
+  async onSettingsMenuClick() {
+
+    let modalCtrl = document.querySelector('ion-modal-controller');
+    await modalCtrl.componentOnReady();
+
+    let modal = await modalCtrl.create({
+      component: 'timer-segment-settings', 
+      componentProps: {
+        name: this.name,
+        durationType: this.durationType
+      }
+    });
+
+    modal.onDidDismiss().then((event) => {
+      console.log('modal dismissed', event);
+      if (event && event.data) {
+        this._name = event.data.name;
+        this._durationType = event.data.durationType
+      }
+    });
+
+    return await modal.present();
   }
 
   render() {
     if (this._active) {
       return [
         <ion-item>
-          <ion-label position='stacked'>{this.name} ({this.durationType})</ion-label>
+          <ion-label position='stacked'>{this._name} ({this._durationType})</ion-label>
           <ion-grid no-padding>
             <ion-row no-padding>
               <ion-col size='10' no-padding>
@@ -133,7 +153,7 @@ export class TimerSegment {
     else {
       return [
         <ion-item>
-          <ion-label position='stacked'>{this.name} ({this.durationType})</ion-label>
+          <ion-label position='stacked'>{this._name} ({this._durationType})</ion-label>
           <ion-grid no-padding>
             <ion-row no-padding>
               <ion-col size='10' no-padding>
@@ -158,7 +178,8 @@ export class TimerSegment {
                 </ion-grid>
               </ion-col>
               <ion-col size='2' no-padding>
-                <ion-button fill='clear'>
+                <ion-button fill='clear'
+                            onClick={()=>this.onSettingsMenuClick()}>
                   <ion-icon slot='icon-only' name='more'></ion-icon>
                 </ion-button>
               </ion-col>

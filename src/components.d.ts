@@ -19,6 +19,15 @@ export namespace Components {
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
+  interface TimerSegmentSettings {
+    'durationType': string;
+    'name': string;
+  }
+  interface TimerSegmentSettingsAttributes extends StencilHTMLAttributes {
+    'durationType'?: string;
+    'name'?: string;
+  }
+
   interface TimerSegment {
     'activate': () => void;
     'active': boolean;
@@ -42,12 +51,14 @@ declare global {
   interface StencilElementInterfaces {
     'AppHome': Components.AppHome;
     'AppRoot': Components.AppRoot;
+    'TimerSegmentSettings': Components.TimerSegmentSettings;
     'TimerSegment': Components.TimerSegment;
   }
 
   interface StencilIntrinsicElements {
     'app-home': Components.AppHomeAttributes;
     'app-root': Components.AppRootAttributes;
+    'timer-segment-settings': Components.TimerSegmentSettingsAttributes;
     'timer-segment': Components.TimerSegmentAttributes;
   }
 
@@ -64,6 +75,12 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
+  interface HTMLTimerSegmentSettingsElement extends Components.TimerSegmentSettings, HTMLStencilElement {}
+  var HTMLTimerSegmentSettingsElement: {
+    prototype: HTMLTimerSegmentSettingsElement;
+    new (): HTMLTimerSegmentSettingsElement;
+  };
+
   interface HTMLTimerSegmentElement extends Components.TimerSegment, HTMLStencilElement {}
   var HTMLTimerSegmentElement: {
     prototype: HTMLTimerSegmentElement;
@@ -73,12 +90,14 @@ declare global {
   interface HTMLElementTagNameMap {
     'app-home': HTMLAppHomeElement
     'app-root': HTMLAppRootElement
+    'timer-segment-settings': HTMLTimerSegmentSettingsElement
     'timer-segment': HTMLTimerSegmentElement
   }
 
   interface ElementTagNameMap {
     'app-home': HTMLAppHomeElement;
     'app-root': HTMLAppRootElement;
+    'timer-segment-settings': HTMLTimerSegmentSettingsElement;
     'timer-segment': HTMLTimerSegmentElement;
   }
 

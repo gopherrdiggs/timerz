@@ -1,9 +1,7 @@
 import { Component } from '@stencil/core';
 
 @Component({
-  tag: 'app-root',
-  styleUrl: 'app-root.css',
-  shadow: false
+  tag: 'app-root'
 })
 export class AppRoot {
 
@@ -20,6 +18,7 @@ export class AppRoot {
       <ion-app>
         { this.configureRoutes() }
         <ion-toast-controller />
+        <ion-modal-controller />
         <ion-nav main animated={false} />
       </ion-app>
     );
