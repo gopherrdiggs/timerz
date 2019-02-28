@@ -7,67 +7,28 @@
 
 import '@stencil/core';
 
-import '@stencil/router';
-import '@stencil/state-tunnel';
 import '@ionic/core';
 import 'ionicons';
-import {
-  MatchResults,
-  RouterHistory,
-} from '@stencil/router';
 
 
 export namespace Components {
 
-  interface AppHome {
-    'history': RouterHistory;
-  }
-  interface AppHomeAttributes extends StencilHTMLAttributes {
-    'history'?: RouterHistory;
-  }
-
-  interface AppProfile {
-    'match': MatchResults;
-  }
-  interface AppProfileAttributes extends StencilHTMLAttributes {
-    'match'?: MatchResults;
-  }
+  interface AppHome {}
+  interface AppHomeAttributes extends StencilHTMLAttributes {}
 
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
-
-  interface AuthCallback {
-    'code': string;
-    'history': RouterHistory;
-    'match': MatchResults;
-    'state': string;
-  }
-  interface AuthCallbackAttributes extends StencilHTMLAttributes {
-    'code'?: string;
-    'history'?: RouterHistory;
-    'match'?: MatchResults;
-    'state'?: string;
-  }
-
-  interface AuthSignin {}
-  interface AuthSigninAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
   interface StencilElementInterfaces {
     'AppHome': Components.AppHome;
-    'AppProfile': Components.AppProfile;
     'AppRoot': Components.AppRoot;
-    'AuthCallback': Components.AuthCallback;
-    'AuthSignin': Components.AuthSignin;
   }
 
   interface StencilIntrinsicElements {
     'app-home': Components.AppHomeAttributes;
-    'app-profile': Components.AppProfileAttributes;
     'app-root': Components.AppRootAttributes;
-    'auth-callback': Components.AuthCallbackAttributes;
-    'auth-signin': Components.AuthSigninAttributes;
   }
 
 
@@ -77,44 +38,20 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
-  interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {}
-  var HTMLAppProfileElement: {
-    prototype: HTMLAppProfileElement;
-    new (): HTMLAppProfileElement;
-  };
-
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
     new (): HTMLAppRootElement;
   };
 
-  interface HTMLAuthCallbackElement extends Components.AuthCallback, HTMLStencilElement {}
-  var HTMLAuthCallbackElement: {
-    prototype: HTMLAuthCallbackElement;
-    new (): HTMLAuthCallbackElement;
-  };
-
-  interface HTMLAuthSigninElement extends Components.AuthSignin, HTMLStencilElement {}
-  var HTMLAuthSigninElement: {
-    prototype: HTMLAuthSigninElement;
-    new (): HTMLAuthSigninElement;
-  };
-
   interface HTMLElementTagNameMap {
     'app-home': HTMLAppHomeElement
-    'app-profile': HTMLAppProfileElement
     'app-root': HTMLAppRootElement
-    'auth-callback': HTMLAuthCallbackElement
-    'auth-signin': HTMLAuthSigninElement
   }
 
   interface ElementTagNameMap {
     'app-home': HTMLAppHomeElement;
-    'app-profile': HTMLAppProfileElement;
     'app-root': HTMLAppRootElement;
-    'auth-callback': HTMLAuthCallbackElement;
-    'auth-signin': HTMLAuthSigninElement;
   }
 
 

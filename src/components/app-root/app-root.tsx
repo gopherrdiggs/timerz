@@ -9,29 +9,19 @@ export class AppRoot {
 
   configureRoutes() {
     return [
-      <stencil-router id='mainRouter'>
-        <stencil-route-switch scrollTopOffset={0}>
-          <stencil-route 
-            url='/' 
-            component='auth-signin' 
-            exact={true} />
-          <stencil-route 
-            url='/callback' 
-            component='auth-callback' />
-          <stencil-route 
-            url='/home' 
-            component='app-home' />
-        </stencil-route-switch>
-      </stencil-router>
+      <ion-router useHash={false}>
+        <ion-route url='/' component='app-home' />
+      </ion-router>
     ];
   }
 
   render() {
     return (
-      <div>
+      <ion-app>
         { this.configureRoutes() }
-        <main></main>
-      </div>
+        <ion-toast-controller />
+        <ion-nav main animated={false} />
+      </ion-app>
     );
   }
 }

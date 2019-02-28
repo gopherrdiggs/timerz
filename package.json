@@ -1,8 +1,8 @@
 {
-  "name": "jira-issue-auditor",
+  "name": "timerz",
   "private": true,
   "version": "0.0.1",
-  "description": "Jira Issue Auditor",
+  "description": "Timerz",
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
