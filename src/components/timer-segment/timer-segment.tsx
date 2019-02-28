@@ -1,9 +1,12 @@
-import { Component, Prop, State } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Method, Prop, State } from "@stencil/core";
 
 @Component({
   tag: 'timer-segment'
 })
 export class TimerSegment {
+
+  @Element() el: HTMLElement;
+  @Event() timerSegmentCompleted: EventEmitter;
 
   @Prop() active: boolean = false;
   @Prop() name: string = 'Segment 1';
@@ -12,6 +15,10 @@ export class TimerSegment {
 
   @State() _active: boolean;
   @State() _duration: number;
+  @State() _progressValue: number;
+
+  private secondsElapsed;
+  private intervalTimerId;
 
   componentWillLoad() {
 
@@ -31,6 +38,57 @@ export class TimerSegment {
     if (this._duration > 0) {
       this._duration = this._duration - 1;
     }
+  }
+
+  @Method()
+  activate() {
+    this._active = true;
+  }
+
+  @Method()
+  deactivate() {
+    this._active = false;
+  }
+
+  @Method()
+  startSegmentTimer() {
+
+    let timeoutSeconds = this.durationType === 'minutes'
+      ? this._duration * 60
+      : this._duration;
+
+    this.secondsElapsed = 0;
+    this.intervalTimerId = setInterval(() => {
+      
+      this.secondsElapsed = this.secondsElapsed + 1;
+      this._progressValue = Math.ceil(this.secondsElapsed / timeoutSeconds * 100) / 100;
+      
+      if (this.secondsElapsed >= timeoutSeconds) {
+        
+        this.completeSegmentTimer();
+      }
+    }, 1000);
+  }
+
+  @Method()
+  cancelSegmentTimer() {
+
+    clearInterval(this.intervalTimerId);
+  }
+
+  completeSegmentTimer() {
+
+    clearInterval(this.intervalTimerId);
+    
+    this.timerSegmentCompleted.emit();
+  }
+
+  onTimerStart() {
+
+  }
+
+  onTimerTick() {
+
   }
 
   render() {
@@ -69,7 +127,7 @@ export class TimerSegment {
             </ion-row>
           </ion-grid>
         </ion-item>,
-        <ion-progress-bar value={0.5}></ion-progress-bar>
+        <ion-progress-bar value={this._progressValue}></ion-progress-bar>
       ];
     }
     else {

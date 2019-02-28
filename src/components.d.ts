@@ -20,16 +20,21 @@ export namespace Components {
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
   interface TimerSegment {
+    'activate': () => void;
     'active': boolean;
+    'cancelSegmentTimer': () => void;
+    'deactivate': () => void;
     'duration': number;
     'durationType': string;
     'name': string;
+    'startSegmentTimer': () => void;
   }
   interface TimerSegmentAttributes extends StencilHTMLAttributes {
     'active'?: boolean;
     'duration'?: number;
     'durationType'?: string;
     'name'?: string;
+    'onTimerSegmentCompleted'?: (event: CustomEvent) => void;
   }
 }
 

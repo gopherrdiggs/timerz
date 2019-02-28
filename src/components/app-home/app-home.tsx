@@ -1,4 +1,4 @@
-import { Component, State } from '@stencil/core';
+import { Component, Listen, State } from '@stencil/core';
 import { TimerSegment } from '../../interfaces';
 
 @Component({
@@ -7,22 +7,68 @@ import { TimerSegment } from '../../interfaces';
 export class AppHome {
 
   @State() timerSegments: TimerSegment[] = [];
+  @State() currentSegmentIndex: number = 0;
 
   componentWillLoad() {
 
     let segments: TimerSegment[] = [
-      { name: 'Segment 1', duration: 3, active: false },
-      { name: 'Segment 2', duration: 10, active: false },
-      { name: 'Segment 3', duration: 5, active: false }
+      { name: 'Segment 1', duration: 3, durationType: 'seconds', active: false },
+      { name: 'Segment 2', duration: 10, durationType: 'seconds', active: false },
+      { name: 'Segment 3', duration: 5, durationType: 'seconds', active: false }
     ]
 
     this.timerSegments = segments;
   }
+
+  onAddSegmentClick() {
+
+    let newSegment = {} as TimerSegment;
+    newSegment.name = `Segment ${this.timerSegments.length + 1}`;
+    newSegment.duration = 1;
+
+    this.timerSegments = [...this.timerSegments, newSegment];
+  }
   
   onStartTimerClick() {
 
+    this.currentSegmentIndex = 0;
+    let segmentElem = document
+      .getElementsByTagName('timer-segment')[this.currentSegmentIndex];
+    if (segmentElem) {
+      segmentElem.activate();
+      segmentElem.startSegmentTimer();
+    }
+  }
+
+  @Listen('body:timerSegmentCompleted')
+  onTimerSegmentCompleted(_event: any) {
+
     let audioElem = document.getElementById('audioElem') as HTMLAudioElement;
-    audioElem.play();
+    if (audioElem) {
+      audioElem.play();
+    }
+    
+    let segmentElem = document
+      .getElementsByTagName('timer-segment')[this.currentSegmentIndex];
+
+    if (segmentElem) {
+      segmentElem.deactivate();
+    }
+
+    this.currentSegmentIndex = this.currentSegmentIndex + 1;
+
+    if (this.timerSegments.length > this.currentSegmentIndex) {
+
+      this.timerSegments[this.currentSegmentIndex].active = true;
+    }
+
+    segmentElem = document
+      .getElementsByTagName('timer-segment')[this.currentSegmentIndex];
+
+    if (segmentElem) {
+      segmentElem.activate();
+      segmentElem.startSegmentTimer();
+    }
   }
 
   render() {
@@ -34,7 +80,8 @@ export class AppHome {
         <ion-toolbar color='secondary'>
           <ion-title>Segments</ion-title>
           <ion-buttons slot='end'>
-            <ion-button slot='end' fill='solid' color='primary'>
+            <ion-button slot='end' fill='solid' color='primary'
+                        onClick={()=>this.onAddSegmentClick()}>
               Add
             </ion-button>
           </ion-buttons>
@@ -45,6 +92,7 @@ export class AppHome {
           { this.timerSegments.map(segment =>
             <timer-segment name={segment.name} 
                            duration={segment.duration} 
+                           durationType={segment.durationType}
                            active={segment.active} />  
           )}
         </ion-list>
@@ -58,7 +106,7 @@ export class AppHome {
           </ion-button>
         </ion-toolbar>
       </ion-footer>,
-      <audio id="audioElem">
+      <audio id='audioElem'>
         <source src="assets/sounds/ship-bell.mp3" type="audio/ogg" />
       </audio>
     ];
