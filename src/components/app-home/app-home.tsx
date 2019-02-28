@@ -8,6 +8,7 @@ export class AppHome {
 
   @State() timerSegments: TimerSegment[] = [];
   @State() currentSegmentIndex: number = 0;
+  @State() timerInProgress: boolean;
 
   componentWillLoad() {
 
@@ -31,12 +32,24 @@ export class AppHome {
   
   onStartTimerClick() {
 
+    this.timerInProgress = true;
     this.currentSegmentIndex = 0;
     let segmentElem = document
       .getElementsByTagName('timer-segment')[this.currentSegmentIndex];
     if (segmentElem) {
       segmentElem.activate();
       segmentElem.startSegmentTimer();
+    }
+  }
+
+  onCancelTimerClick() {
+
+    this.timerInProgress = false;
+    let segmentElem = document
+      .getElementsByTagName('timer-segment')[this.currentSegmentIndex];
+    if (segmentElem) {
+      segmentElem.deactivate();
+      segmentElem.cancelSegmentTimer();
     }
   }
 
@@ -47,7 +60,7 @@ export class AppHome {
     if (audioElem) {
       audioElem.play();
     }
-    
+
     let segmentElem = document
       .getElementsByTagName('timer-segment')[this.currentSegmentIndex];
 
@@ -68,6 +81,9 @@ export class AppHome {
     if (segmentElem) {
       segmentElem.activate();
       segmentElem.startSegmentTimer();
+    }
+    else {
+      this.timerInProgress = false;
     }
   }
 
@@ -99,11 +115,18 @@ export class AppHome {
       </ion-content>,
       <ion-footer>
         <ion-toolbar >
-          <ion-button expand='block' size='large' shape='round'
-                      fill='solid' color='primary'
-                      onClick={()=>this.onStartTimerClick()}>
-            Start Timer
-          </ion-button>
+          { this.timerInProgress
+            ? <ion-button expand='block' size='large' shape='round'
+                          fill='solid' color='primary'
+                          onClick={()=>this.onCancelTimerClick()}>
+                Stop Timer
+            </ion-button>
+            : <ion-button expand='block' size='large' shape='round'
+                          fill='solid' color='primary'
+                          onClick={()=>this.onStartTimerClick()}>
+                Start Timer
+              </ion-button>
+          }
         </ion-toolbar>
       </ion-footer>,
       <audio id='audioElem'>
