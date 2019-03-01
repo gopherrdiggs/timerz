@@ -12,13 +12,11 @@ export class AppHome {
 
   componentWillLoad() {
 
-    let segments: TimerSegment[] = [
+    this.timerSegments = [
       { name: 'Segment 1', duration: 3, durationType: 'seconds', active: false },
       { name: 'Segment 2', duration: 10, durationType: 'seconds', active: false },
       { name: 'Segment 3', duration: 5, durationType: 'seconds', active: false }
-    ]
-
-    this.timerSegments = segments;
+    ];
   }
 
   onAddSegmentClick() {
@@ -88,6 +86,19 @@ export class AppHome {
     }
   }
 
+  @Listen('body:timerSegmentDeleteClicked')
+  onTimerSegmentDeleteClicked(event: any) {
+    
+    this.timerSegments = this.timerSegments.filter((_segment, index) => {
+      return index != event.detail.index;
+    });
+    
+    let segmentsListElem = document.getElementById('segmentsList') as HTMLIonListElement;
+    if (segmentsListElem) {
+      segmentsListElem.closeSlidingItems();
+    }
+  }
+
   render() {
     return [
       <ion-header>
@@ -97,17 +108,18 @@ export class AppHome {
         <ion-toolbar color='secondary'>
           <ion-title>Segments</ion-title>
           <ion-buttons slot='end'>
-            <ion-button slot='end' fill='solid' color='primary'
+            <ion-button slot='end' fill='solid' shape='round' color='primary'
                         onClick={()=>this.onAddSegmentClick()}>
-              Add
+              <ion-icon slot='icon-only' name='add'></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>,
       <ion-content padding>
-        <ion-list>
-          { this.timerSegments.map(segment =>
-            <timer-segment name={segment.name} 
+        <ion-list id='segmentsList'>
+          { this.timerSegments.map((segment, index) =>
+            <timer-segment index={index} 
+                           name={segment.name} 
                            duration={segment.duration} 
                            durationType={segment.durationType}
                            active={segment.active} />  
@@ -130,7 +142,7 @@ export class AppHome {
           }
         </ion-toolbar>
       </ion-footer>,
-      <audio id='audioElem' src='assets/sounds/bell.ogg'></audio>
+      <audio id='audioElem' src='assets/sounds/bell.mp3'></audio>
     ];
   }
 }

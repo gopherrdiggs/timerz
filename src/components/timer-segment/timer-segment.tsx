@@ -7,7 +7,9 @@ export class TimerSegment {
 
   @Element() el: HTMLElement;
   @Event() timerSegmentCompleted: EventEmitter;
+  @Event() timerSegmentDeleteClicked: EventEmitter;
 
+  @Prop() index: number;
   @Prop() active: boolean = false;
   @Prop() name: string = 'Segment 1';
   @Prop() duration: number = 3;
@@ -18,6 +20,8 @@ export class TimerSegment {
   @State() _duration: number;
   @State() _durationType: string;
   @State() _progressValue: number;
+  
+  private modalController: HTMLIonModalControllerElement;
 
   private secondsElapsed;
   private intervalTimerId;
@@ -28,6 +32,8 @@ export class TimerSegment {
     this._name = this.name;
     this._duration = this.duration;
     this._durationType = this.durationType;
+    
+    this.modalController = document.querySelector('ion-modal-controller');
   }
 
   @Method()
@@ -89,19 +95,16 @@ export class TimerSegment {
 
   async onSettingsMenuClick() {
 
-    let modalCtrl = document.querySelector('ion-modal-controller');
-    await modalCtrl.componentOnReady();
-
-    let modal = await modalCtrl.create({
+    let modal = await this.modalController.create({
       component: 'timer-segment-settings', 
       componentProps: {
-        name: this.name,
-        durationType: this.durationType
+        name: this._name,
+        durationType: this._durationType
       }
     });
 
     modal.onDidDismiss().then((event) => {
-      console.log('modal dismissed', event);
+      
       if (event && event.data) {
         this._name = event.data.name;
         this._durationType = event.data.durationType
@@ -109,6 +112,13 @@ export class TimerSegment {
     });
 
     return await modal.present();
+  }
+
+  onDeleteClick() {
+
+    this.timerSegmentDeleteClicked.emit({
+      index: this.index
+    });
   }
 
   render() {
@@ -152,40 +162,48 @@ export class TimerSegment {
     }
     else {
       return [
-        <ion-item>
-          <ion-label position='stacked'>{this._name} ({this._durationType})</ion-label>
-          <ion-grid no-padding>
-            <ion-row no-padding>
-              <ion-col size='10' no-padding>
-                <ion-grid no-padding>
-                  <ion-row no-padding>
-                    <ion-col size='4' no-padding>
-                      <ion-button fill='clear'
-                                  onClick={()=>this.onDecrementClick()}>
-                        <ion-icon slot='icon-only' name='remove-circle-outline'></ion-icon>
-                      </ion-button>
-                    </ion-col>
-                    <ion-col size='4' no-padding>
-                      <ion-input type='number' value={this._duration.toString()}></ion-input>
-                    </ion-col>
-                    <ion-col size='4' no-padding>
-                      <ion-button fill='clear'
-                                  onClick={()=>this.onIncrementClick()}>
-                        <ion-icon slot='icon-only' name='add-circle-outline'></ion-icon>
-                      </ion-button>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-col>
-              <ion-col size='2' no-padding>
-                <ion-button fill='clear'
-                            onClick={()=>this.onSettingsMenuClick()}>
-                  <ion-icon slot='icon-only' name='more'></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-item>
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label position='stacked'>{this._name} ({this._durationType})</ion-label>
+            <ion-grid no-padding>
+              <ion-row no-padding>
+                <ion-col size='10' no-padding>
+                  <ion-grid no-padding>
+                    <ion-row no-padding>
+                      <ion-col size='4' no-padding>
+                        <ion-button fill='clear'
+                                    onClick={()=>this.onDecrementClick()}>
+                          <ion-icon slot='icon-only' name='remove-circle-outline'></ion-icon>
+                        </ion-button>
+                      </ion-col>
+                      <ion-col size='4' no-padding>
+                        <ion-input type='number' value={this._duration.toString()}></ion-input>
+                      </ion-col>
+                      <ion-col size='4' no-padding>
+                        <ion-button fill='clear'
+                                    onClick={()=>this.onIncrementClick()}>
+                          <ion-icon slot='icon-only' name='add-circle-outline'></ion-icon>
+                        </ion-button>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-col>
+                <ion-col size='2' no-padding>
+                  <ion-button fill='clear'
+                              onClick={()=>this.onSettingsMenuClick()}>
+                    <ion-icon slot='icon-only' name='more'></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+          <ion-item-options>
+            <ion-item-option color='danger'
+                             onClick={()=>this.onDeleteClick()}>
+              Delete
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
       ];
     }
   }

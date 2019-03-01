@@ -35,6 +35,7 @@ export namespace Components {
     'deactivate': () => void;
     'duration': number;
     'durationType': string;
+    'index': number;
     'name': string;
     'startSegmentTimer': () => void;
   }
@@ -42,8 +43,10 @@ export namespace Components {
     'active'?: boolean;
     'duration'?: number;
     'durationType'?: string;
+    'index'?: number;
     'name'?: string;
     'onTimerSegmentCompleted'?: (event: CustomEvent) => void;
+    'onTimerSegmentDeleteClicked'?: (event: CustomEvent) => void;
   }
 }
 

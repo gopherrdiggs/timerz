@@ -12,31 +12,30 @@ export class TimerSegmentSettings {
   @State() _minutesChecked: boolean;
   @State() _secondsChecked: boolean;
 
+  private modalController: HTMLIonModalControllerElement;
+
   componentWillLoad() {
 
     this._name = this.name;
+    console.log("durationType received:", this.durationType);
     if (this.durationType && this.durationType === 'seconds') {
       this._secondsChecked = true;
     }
     else {
       this._minutesChecked = true;
     }
+
+    this.modalController = document.querySelector('ion-modal-controller');
   }
 
   async onBackClick() {
     
-    let modalCtrl = document.querySelector('ion-modal-controller');
-    await modalCtrl.componentOnReady();
-
-    modalCtrl.dismiss();
+    this.modalController.dismiss();
   }
 
   async onSaveClick() {
 
-    let modalCtrl = document.querySelector('ion-modal-controller');
-    await modalCtrl.componentOnReady();
-
-    modalCtrl.dismiss({
+    this.modalController.dismiss({
       name: this._name,
       durationType: this._minutesChecked ? 'minutes' : 'seconds'
     });
@@ -79,7 +78,7 @@ export class TimerSegmentSettings {
           <ion-title>Segment Settings</ion-title>
         </ion-toolbar>
       </ion-header>,
-      <ion-content>
+      <ion-content padding>
         <ion-item>
           <ion-label position='stacked'>Name</ion-label>
           <ion-input id='name' value={this._name}></ion-input>
@@ -98,7 +97,7 @@ export class TimerSegmentSettings {
                         value='seconds' checked={this._secondsChecked}></ion-radio>
             </ion-item>
           </ion-radio-group>
-        </ion-list>
+        </ion-list>        
       </ion-content>,
       <ion-footer>
       <ion-toolbar >
